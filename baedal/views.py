@@ -9,7 +9,24 @@ def index(request):
 
 # =========== Customer =====================
 def customer_signin(request):
-    return render(request, 'baedal/customer_signin.html', {})
+    context = {}
+    if request.method == "POST" :
+        username = request.POST.get('username') 
+        password = request.POST.get('password') 
+        try:
+            customer = Customer.objects.get(username=username)
+            if not check_password(password, customer.password):
+                raise Exception("Passowrd doen't not match")
+
+            # happy path
+            request.session['username'] = username
+            return redirect('baedal:index')
+        except Exception as e:
+            print(e)
+            # failure: user doesn't exist or password doesn't match
+            context['error'] = "ID 혹은 PW가 잘못되었습니다"
+
+    return render(request, 'baedal/customer_signin.html', context)
 
 def customer_signup(request):
     context = {}
