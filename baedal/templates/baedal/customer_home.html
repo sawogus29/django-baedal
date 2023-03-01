@@ -1,2 +1,13 @@
 {% include 'baedal/customer_navbar.html' %}
-<h1>Customer Home</h1>
+<h1>홈</h1>
+
+{% for cat, rests in cat_rests.items %}
+<div>
+  <h3>{{cat}}</h3>
+  <ul>
+    {% for rest in rests %}
+    <li><a href="">{{rest.display_name}}</a></li>
+    {% endfor %}
+  </ul>
+</div>
+{% endfor %}

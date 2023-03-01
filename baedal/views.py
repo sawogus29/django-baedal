@@ -1,3 +1,4 @@
+from collections import defaultdict
 from django.shortcuts import render, redirect
 from django.contrib.auth.hashers import make_password, check_password
 
@@ -73,6 +74,14 @@ def customer_signup(request):
 @signin_required('customer')
 def customer_home(request):
     context = {}
+    
+    restaurants = Restaurant.objects.all()
+    cat_rests = defaultdict(list)
+    for rest in restaurants:
+        cat_rests[rest.category].append(rest)
+    context['cat_rests'] = dict(cat_rests)
+    print(cat_rests)
+
     return render(request, 'baedal/customer_home.html', context)
 # ============================================
 
