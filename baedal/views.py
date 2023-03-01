@@ -3,6 +3,24 @@ from django.contrib.auth.hashers import make_password, check_password
 
 from .models import Customer, Restaurant
 
+def signin_required(usertype):
+    def real_decorator(func):
+        def wrapper(request, *args, **kargs):
+            try:
+                if request.session['usertype'] != usertype:
+                    raise Exception("usertype don't match")
+            except Exception as e:
+                print(e)
+                return redirect(f'baedal:{usertype}_signin')
+
+            return func(request, *args, **kargs)
+        return wrapper
+    return real_decorator
+
+@signin_required('customer')
+def protected(request):
+    return render(request, 'baedal/message_print.html', {'message': 'customer protected'})
+
 # Create your views here.
 def index(request):
     return render(request, 'baedal/index.html', {})

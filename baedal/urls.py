@@ -7,6 +7,7 @@ urlpatterns = [
   path('', views.index, name = 'index'),
   # common
   path('signout', views.signout, name='singout'),
+  path('protected', views.protected, name='protected'),
   
   # customer
   path('customer/signin', views.customer_signin, name='customer_signin'),
