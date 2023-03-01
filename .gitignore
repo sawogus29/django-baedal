@@ -1,0 +1,6 @@
+# virtual-env
+venv/
+
+# Byte-compiles
+__pycache__/
+*.py[cod]
