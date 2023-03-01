@@ -3,13 +3,13 @@ from django.db import models
 # Create your models here.
 class Restaurant(models.Model):
     username = models.CharField(max_length=50, primary_key=True, unique=True)
-    password = models.CharField(max_length=50)
+    password = models.CharField(max_length=300)
     display_name = models.CharField(max_length=50)
     category = models.CharField(choices=models.TextChoices('Category', '치킨 중식 한식').choices, max_length=50)
 
 class Customer(models.Model):
     username = models.CharField(max_length=50, primary_key=True, unique=True)
-    password = models.CharField(max_length=50)
+    password = models.CharField(max_length=300)
     phone = models.CharField(max_length=20)
     address = models.CharField(max_length=100)
     
