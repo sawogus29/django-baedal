@@ -144,7 +144,6 @@ def customer_orders(request):
     
     try:
         purchases = Purchase.objects.filter(customer=request.session['username'])
-        print(purchases)
         purchases = [{'created_date': purchase.created_date, 
                       'restaurant':purchase.restaurant, 
                       'total_price': purchase.total_price,
@@ -241,4 +240,25 @@ def new_menu(request):
         return redirect('baedal:restaurant_menus')
     
     return render(request, 'baedal/new_menu.html', context)
+
+@signin_required('restaurant')
+def restaurant_orders(request):
+    context = {}
+    
+    try:
+        purchases = Purchase.objects.filter(restaurant=request.session['username'])
+        purchases = [{'created_date': purchase.created_date, 
+                      'customer':purchase.customer, 
+                      'total_price': purchase.total_price,
+                      'status': purchase.status,
+                      'menus': PurchaseMenu.objects.filter(purchase=purchase)} 
+                      for purchase in purchases]
+
+        context['purchases'] = purchases
+
+    except Exception as e:
+        print(e)
+        context['error'] = "주문내역을 불러오는 도중 에러가 발생했습니다"
+
+    return render(request, 'baedal/restaurant_orders.html', context)
 # ============================================

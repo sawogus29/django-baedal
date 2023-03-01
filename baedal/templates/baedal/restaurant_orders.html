@@ -1,0 +1,22 @@
+{% include 'baedal/restaurant_navbar.html' %}
+<h1>주문관리</h1>
+{% if error %}
+<p><strong>{{error}}</strong></p>
+{% endif %} {% for purchase in purchases %}
+<form>
+  <fieldset>
+    <h4>고객명: {{purchase.customer.username}}</h4>
+    <p>{{purchase.created_date}}</p>
+    <p>상태: {{purchase.status}}</p>
+    <p>전화번호: {{purchase.customer.phone}}</p>
+    <p>주소: {{purchase.customer.address}}</p>
+    <p>총액: {{purchase.total_price}}</p>
+    {{menus}}
+    <ul>
+      {% for menu in purchase.menus %}
+      <li>{{menu.name}}: {{menu.quantity}} x {{menu.price}}</li>
+      {% endfor %}
+    </ul>
+  </fieldset>
+</form>
+{% endfor %}
