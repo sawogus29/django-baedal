@@ -17,10 +17,6 @@ def signin_required(usertype):
         return wrapper
     return real_decorator
 
-@signin_required('customer')
-def protected(request):
-    return render(request, 'baedal/message_print.html', {'message': 'customer protected'})
-
 # Create your views here.
 def index(request):
     return render(request, 'baedal/index.html', {})
@@ -44,7 +40,7 @@ def customer_signin(request):
             # happy path
             request.session['username'] = username
             request.session['usertype'] = 'customer'
-            return redirect('baedal:index')
+            return redirect('baedal:customer_home')
         except Exception as e:
             print(e)
             # failure: user doesn't exist or password doesn't match
@@ -73,6 +69,11 @@ def customer_signup(request):
         context['error'] = "이미 존재하는 ID입니다"
 
     return render(request, 'baedal/customer_signup.html', context)
+
+@signin_required('customer')
+def customer_home(request):
+    context = {}
+    return render(request, 'baedal/customer_home.html', context)
 # ============================================
 
 # =========== Restaurant =====================
