@@ -99,7 +99,7 @@ def restaurant_signin(request):
             # happy path
             request.session['username'] = username
             request.session['usertype'] = 'restaurant'
-            return redirect('baedal:index')
+            return redirect('baedal:restaurant_menus')
         except Exception as e:
             print(e)
             # failure: user doesn't exist or password doesn't match
@@ -131,4 +131,8 @@ def restaurant_signup(request):
         context['error'] = "이미 존재하는 ID입니다"
 
     return render(request, 'baedal/restaurant_signup.html', context)
+
+def restaurant_menus(request):
+    context = {}
+    return render(request, 'baedal/restaurant_menus.html', context)
 # ============================================

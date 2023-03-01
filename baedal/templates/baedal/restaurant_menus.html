@@ -1,0 +1,13 @@
+{% include 'baedal/restaurant_navbar.html' %}
+<h1>메뉴관리</h1>
+
+<a href="{% url 'baedal:new_menu' %}">메뉴 추가</a>
+
+{% for menu in menus %}
+<div>
+  <form>
+    <p>{{menu.name}}</p>
+    <p>{{menu.price}}</p>
+  </form>
+</div>
+{% endfor %}
