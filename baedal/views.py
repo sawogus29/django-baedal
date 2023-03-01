@@ -244,10 +244,20 @@ def new_menu(request):
 @signin_required('restaurant')
 def restaurant_orders(request):
     context = {}
+    if request.method == 'POST':
+        try:
+            purchase_id = request.POST.get('purchase_id')
+            purchase = Purchase.objects.get(id=purchase_id)
+            purchase.status = request.POST.get('status')
+            purchase.save()
+        except Exception as e:
+            context['error'] = "접수/반려 도중 에러가 발생 했습니다"
+            print(e)
     
     try:
         purchases = Purchase.objects.filter(restaurant=request.session['username'])
-        purchases = [{'created_date': purchase.created_date, 
+        purchases = [{'id': purchase.id,
+                      'created_date': purchase.created_date, 
                       'customer':purchase.customer, 
                       'total_price': purchase.total_price,
                       'status': purchase.status,

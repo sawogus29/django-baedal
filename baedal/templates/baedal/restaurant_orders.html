@@ -3,7 +3,8 @@
 {% if error %}
 <p><strong>{{error}}</strong></p>
 {% endif %} {% for purchase in purchases %}
-<form>
+<form method="POST">
+  {% csrf_token %}
   <fieldset>
     <h4>고객명: {{purchase.customer.username}}</h4>
     <p>{{purchase.created_date}}</p>
@@ -17,6 +18,14 @@
       <li>{{menu.name}}: {{menu.quantity}} x {{menu.price}}</li>
       {% endfor %}
     </ul>
+    {% if purchase.status == "대기" %}
+    <input type="hidden" name="purchase_id" value="{{purchase.id}}" />
+    <input type="radio" name="status" id="accept" value="접수" checked />
+    <label for="accept">접수</label>
+    <input type="radio" name="status" id="reject" value="반려" />
+    <label for="reject">반려</label>
+    <input type="submit" value="확인" />
+    {% endif %}
   </fieldset>
 </form>
 {% endfor %}
