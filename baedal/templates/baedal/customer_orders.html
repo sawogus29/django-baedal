@@ -1,2 +1,18 @@
 {% include 'baedal/customer_navbar.html' %}
 <h1>주문내역</h1>
+{% if error %}
+<p><strong>{{error}}</strong></p>
+{% endif %} {% for purchase in purchases %}
+<div style="border: 1px solid black">
+  <h4>{{purchase.restaurant.display_name}}</h4>
+  <p>{{purchase.created_date}}</p>
+  <p>상태: {{purchase.status}}</p>
+  <p>총액: {{purchase.total_price}}</p>
+  {{menus}}
+  <ul>
+    {% for menu in purchase.menus %}
+    <li>{{menu.name}}: {{menu.quantity}} x {{menu.price}}</li>
+    {% endfor %}
+  </ul>
+</div>
+{% endfor %}
