@@ -1,0 +1,23 @@
+<h1>회원가입(고객용)</h1>
+<form>
+  <fieldset>
+    <label for="username">ID:</label>
+    <input id="username" type="text" name="username" />
+    <br />
+    <label for="password">PW:</label>
+    <input id="password" type="password" name="password" />
+    <br />
+    <label for="phone">전호번호</label>
+    <input id="phone" type="text" name="phone" />
+    <br />
+    <label for="address">주소</label>
+    <input id="address" type="text" name="address" />
+    <br />
+    <input type="submit" value="회원가입" />
+  </fieldset>
+</form>
+
+<p>
+  이미 회원이신가요?
+  <a href="{% url 'baedal:customer_signin' %}">로그인으로</a>
+</p>
