@@ -2,7 +2,7 @@ from collections import defaultdict
 from django.shortcuts import render, redirect
 from django.contrib.auth.hashers import make_password, check_password
 
-from .models import Customer, Restaurant
+from .models import Customer, Restaurant, Menu
 
 def signin_required(usertype):
     def real_decorator(func):
@@ -132,7 +132,38 @@ def restaurant_signup(request):
 
     return render(request, 'baedal/restaurant_signup.html', context)
 
+@signin_required('restaurant')
 def restaurant_menus(request):
     context = {}
+    username = request.session['username']
+    
+    try:
+        restaurant = Restaurant.objects.get(username=username)
+        menus = Menu.objects.filter(restaurant=restaurant)
+        context['menus'] = menus
+    except Exception as e:
+        print(e)
+        context['menus'] = []
+
     return render(request, 'baedal/restaurant_menus.html', context)
+
+@signin_required('restaurant')
+def new_menu(request):
+    context = {}
+    username = request.session['username']
+    
+    if request.method == 'POST':
+        try:
+            restaurant = Restaurant.objects.get(username=username)
+            menu = Menu(
+                restaurant=restaurant, 
+                name=request.POST.get('name'), 
+                price=request.POST.get('price')
+            )
+            menu.save()
+        except Exception as e:
+            print(e)
+        return redirect('baedal:restaurant_menus')
+    
+    return render(request, 'baedal/new_menu.html', context)
 # ============================================

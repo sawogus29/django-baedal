@@ -6,8 +6,10 @@
 {% for menu in menus %}
 <div>
   <form>
-    <p>{{menu.name}}</p>
-    <p>{{menu.price}}</p>
+    <fieldset>
+      <p>{{menu.name}}</p>
+      <p>{{menu.price}}</p>
+    </fieldset>
   </form>
 </div>
 {% endfor %}

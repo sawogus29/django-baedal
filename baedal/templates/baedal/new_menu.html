@@ -1,0 +1,13 @@
+<a href="{% url 'baedal:restaurant_menus' %}">돌아가기</a>
+<form method="POST">
+  <fieldset>
+    {% csrf_token %}
+    <label for="name">메뉴명</label>
+    <input id="name" type="text" name="name" />
+    <br />
+    <label for="price">가격</label>
+    <input id="price" type="number" name="price" />
+    <br />
+    <input type="submit" value="완료" />
+  </fieldset>
+</form>
