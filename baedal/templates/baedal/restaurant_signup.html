@@ -1,5 +1,8 @@
 <h1>회원가입(음식점용)</h1>
-<form>
+{% if error %}
+<strong>{{error}}</strong>
+{% endif %}
+<form method="POST">
   <fieldset>
     {% csrf_token %}
     <label for="username">ID:</label>
@@ -8,15 +11,15 @@
     <label for="password">PW:</label>
     <input id="password" type="password" name="password" />
     <br />
+    <label for="display_name">음식점명</label>
+    <input id="display_name" type="text" name="display_name" />
+    <br />
     <label for="category">카테고리</label>
     <select id="category" name="category">
       {% for cat in categories %}
       <option value="{{cat}}">{{cat}}</option>
       {% endfor %}
     </select>
-    <br />
-    <label for="address">주소</label>
-    <input id="address" type="text" name="address" />
     <br />
     <input type="submit" value="회원가입" />
   </fieldset>

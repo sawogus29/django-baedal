@@ -56,8 +56,27 @@ def restaurant_signin(request):
     return render(request, 'baedal/restaurant_signin.html', {})
 
 def restaurant_signup(request):
+    context = {}
     categories = [cat for cat, _ in Restaurant.category.field.choices]
-    print(categories)
+    context['categories'] = categories
 
-    return render(request, 'baedal/restaurant_signup.html', {'categories': categories})
+    if request.method == "POST" :
+        username = request.POST.get('username') 
+        # happy path
+        if not Restaurant.objects.filter(username=username):
+            # store Customer to DB
+            customer = Restaurant(
+                username=username, 
+                password=make_password(request.POST.get('password')), 
+                display_name=request.POST.get('display_name'), 
+                category=request.POST.get('category'), 
+            )
+            customer.save()
+
+            return redirect('baedal:restaurant_signin')
+        
+        # failure: username already exist
+        context['error'] = "이미 존재하는 ID입니다"
+
+    return render(request, 'baedal/restaurant_signup.html', context)
 # ============================================
