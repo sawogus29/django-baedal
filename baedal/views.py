@@ -137,6 +137,12 @@ def new_order(request, rest_name):
         print(e)
     
     return render(request, 'baedal/new_order.html', context)
+
+@signin_required('customer')
+def customer_orders(request):
+    context = {}
+
+    return render(request, 'baedal/customer_orders.html', context)
 # ============================================
 
 # =========== Restaurant =====================
