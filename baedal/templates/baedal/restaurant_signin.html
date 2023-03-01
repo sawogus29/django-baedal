@@ -1,4 +1,4 @@
-<h1>로그인(고객용)</h1>
+<h1>로그인(음식점용)</h1>
 <form>
   <fieldset>
     <label for="username">ID:</label>
@@ -13,9 +13,9 @@
 
 <p>
   회원이 아니신가요?
-  <a href="{% url 'baedal:customer_signup' %}">회원가입으로</a>
+  <a href="{% url 'baedal:restaurant_signup' %}">회원가입으로</a>
 </p>
 <p>
-  음식점 사장님이신가요?
-  <a href="{% url 'baedal:restaurant_signin' %}">음식점용 로그인으로</a>
+  일반 고객이신가요?
+  <a href="{% url 'baedal:customer_signin' %}">고객용 로그인으로</a>
 </p>
