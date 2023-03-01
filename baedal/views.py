@@ -131,7 +131,7 @@ def new_order(request, rest_name):
                     )
                     purchaseMenu.save()
 
-            return redirect('baedal:customer_home')
+            return redirect('baedal:customer_orders')
     except Exception as e:
         context['error'] = "주문 중 에러가 발생했습니다"
         print(e)
