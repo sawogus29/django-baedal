@@ -7,6 +7,11 @@ from .models import Customer, Restaurant
 def index(request):
     return render(request, 'baedal/index.html', {})
 
+# =========== Common ======================
+def signout(request):
+    request.session.clear()
+    return redirect('baedal:index')
+
 # =========== Customer =====================
 def customer_signin(request):
     context = {}
