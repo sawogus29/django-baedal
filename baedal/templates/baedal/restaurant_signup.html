@@ -1,6 +1,7 @@
 <h1>회원가입(음식점용)</h1>
 <form>
   <fieldset>
+    {% csrf_token %}
     <label for="username">ID:</label>
     <input id="username" type="text" name="username" />
     <br />
