@@ -143,7 +143,7 @@ def customer_orders(request):
     context = {}
     
     try:
-        purchases = Purchase.objects.filter(customer=request.session['username'])
+        purchases = Purchase.objects.filter(customer=request.session['username']).order_by('-created_date')
         purchases = [{'created_date': purchase.created_date, 
                       'restaurant':purchase.restaurant, 
                       'total_price': purchase.total_price,
@@ -250,12 +250,13 @@ def restaurant_orders(request):
             purchase = Purchase.objects.get(id=purchase_id)
             purchase.status = request.POST.get('status')
             purchase.save()
+            return redirect(request.path)
         except Exception as e:
             context['error'] = "접수/반려 도중 에러가 발생 했습니다"
             print(e)
     
     try:
-        purchases = Purchase.objects.filter(restaurant=request.session['username'])
+        purchases = Purchase.objects.filter(restaurant=request.session['username']).order_by('-created_date')
         purchases = [{'id': purchase.id,
                       'created_date': purchase.created_date, 
                       'customer':purchase.customer, 
