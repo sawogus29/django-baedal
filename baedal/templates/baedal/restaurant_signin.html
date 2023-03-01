@@ -1,5 +1,8 @@
 <h1>로그인(음식점용)</h1>
-<form>
+{% if error %}
+<strong>{{error}}</strong>
+{% endif %}
+<form method="POST">
   <fieldset>
     {% csrf_token %}
     <label for="username">ID:</label>

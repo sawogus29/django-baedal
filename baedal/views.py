@@ -14,12 +14,13 @@ def customer_signin(request):
         username = request.POST.get('username') 
         password = request.POST.get('password') 
         try:
-            customer = Customer.objects.get(username=username)
-            if not check_password(password, customer.password):
+            user = Customer.objects.get(username=username)
+            if not check_password(password, user.password):
                 raise Exception("Passowrd doen't not match")
 
             # happy path
             request.session['username'] = username
+            request.session['usertype'] = 'customer'
             return redirect('baedal:index')
         except Exception as e:
             print(e)
@@ -53,7 +54,25 @@ def customer_signup(request):
 
 # =========== Restaurant =====================
 def restaurant_signin(request):
-    return render(request, 'baedal/restaurant_signin.html', {})
+    context = {}
+    if request.method == "POST" :
+        username = request.POST.get('username') 
+        password = request.POST.get('password') 
+        try:
+            user = Restaurant.objects.get(username=username)
+            if not check_password(password, user.password):
+                raise Exception("Passowrd doen't not match")
+
+            # happy path
+            request.session['username'] = username
+            request.session['usertype'] = 'restaurant'
+            return redirect('baedal:index')
+        except Exception as e:
+            print(e)
+            # failure: user doesn't exist or password doesn't match
+            context['error'] = "ID 혹은 PW가 잘못되었습니다"
+
+    return render(request, 'baedal/restaurant_signin.html', context)
 
 def restaurant_signup(request):
     context = {}
