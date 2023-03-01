@@ -6,7 +6,11 @@
   <h3>{{cat}}</h3>
   <ul>
     {% for rest in rests %}
-    <li><a href="">{{rest.display_name}}</a></li>
+    <li>
+      <a href="{% url 'baedal:new_order' rest_name=rest.username %}"
+        >{{rest.display_name}}</a
+      >
+    </li>
     {% endfor %}
   </ul>
 </div>

@@ -1,0 +1,14 @@
+<a href="{% url 'baedal:customer_home' %}">돌아가기</a>
+<h1>{{rest_display_name}}</h1>
+<p><strong>{{ error }}</strong></p>
+<form method="POST">
+  {% csrf_token %} {% for menu in menus %}
+  <fieldset name="{{menu.name}}">
+    <h4>{{menu.name}}</h4>
+    <p>가격: {{menu.price}}</p>
+    <label>수량: </label>
+    <input type="number" name="{{menu.id}}_quantity" />
+  </fieldset>
+  {% endfor %}
+  <input type="submit" value="주문" />
+</form>

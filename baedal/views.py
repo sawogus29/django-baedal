@@ -1,8 +1,10 @@
 from collections import defaultdict
 from django.shortcuts import render, redirect
 from django.contrib.auth.hashers import make_password, check_password
+from django.utils import timezone
+from django.db import transaction
 
-from .models import Customer, Restaurant, Menu
+from .models import Customer, Restaurant, Menu, Purchase, PurchaseMenu
 
 def signin_required(usertype):
     def real_decorator(func):
@@ -83,6 +85,58 @@ def customer_home(request):
     print(cat_rests)
 
     return render(request, 'baedal/customer_home.html', context)
+
+@signin_required('customer')
+def new_order(request, rest_name):
+    context = {}
+    try:
+        rest = Restaurant.objects.get(username=rest_name)
+        menus = Menu.objects.filter(restaurant=rest)
+        context['rest_display_name'] = rest.display_name
+        context['menus'] = menus
+
+        if request.method == 'POST':
+            order = {}
+            for menu in menus:
+                quantity = request.POST.get(f'{menu.id}_quantity')
+                if not quantity:
+                    continue
+                quantity = int(quantity)
+                if quantity <= 0:
+                    raise Exception("invalid quantity")
+                order[menu.id] = (menu.name, menu.price, quantity)
+            
+            if not order:
+                raise Exception("empty order")
+
+            total_price = sum(price*quantity for _, price, quantity in order.values())
+            
+            # save to DB
+            customer = Customer(username=request.session['username'])
+            with transaction.atomic():
+                purchase = Purchase(
+                    restaurant=rest, 
+                    customer=customer,
+                    total_price=total_price, 
+                    status='대기', 
+                    created_date=timezone.now()
+                )
+                purchase.save()
+                for name, price, quantity in order.values():
+                    purchaseMenu = PurchaseMenu(
+                        purchase=purchase, 
+                        name = name, 
+                        price = price, 
+                        quantity = quantity
+                    )
+                    purchaseMenu.save()
+
+            return redirect('baedal:customer_home')
+    except Exception as e:
+        context['error'] = "주문 중 에러가 발생했습니다"
+        print(e)
+    
+    return render(request, 'baedal/new_order.html', context)
 # ============================================
 
 # =========== Restaurant =====================
