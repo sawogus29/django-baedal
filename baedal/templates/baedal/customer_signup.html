@@ -1,5 +1,8 @@
 <h1>회원가입(고객용)</h1>
-<form>
+{% if error %}
+<strong>{{error}}</strong>
+{% endif %}
+<form method="POST">
   <fieldset>
     {% csrf_token %}
     <label for="username">ID:</label>
